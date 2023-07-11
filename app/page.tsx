@@ -18,6 +18,7 @@ const firebaseConfig = {
 
 import RoomSelector from "../components/RoomSelector";
 import SignIn from "../components/SignIn";
+import SignOut from "../components/Signout";
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
@@ -25,5 +26,10 @@ const auth = getAuth(app);
 export default function App() {
     const [user] = useAuthState(auth);
 
-    return <section>{user ? <RoomSelector /> : <SignIn />}</section>;
+    return (
+        <section>
+            {user ? <RoomSelector /> : <SignIn auth={auth} />}
+            <SignOut auth={auth} />
+        </section>
+    );
 }
