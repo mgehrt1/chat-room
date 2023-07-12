@@ -2,9 +2,9 @@
 
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useCollectionData } from "react-firebase-hooks/firestore";
 
 const firebaseConfig = {
     apiKey: "AIzaSyAl-wJQkOgpAN0SdElFosJ8iwN56J7ZKH8",
@@ -17,18 +17,19 @@ const firebaseConfig = {
 };
 
 import RoomSelector from "../components/RoomSelector";
-import SignIn from "../components/SignIn";
-import SignOut from "../components/Signout";
+import SignIn from "@/components/SignIn";
+import SignOut from "@/components/SignOut";
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getFirestore(app);
 
 export default function App() {
     const [user] = useAuthState(auth);
 
     return (
         <section>
-            {user ? <RoomSelector /> : <SignIn auth={auth} />}
+            {user ? <RoomSelector db={db} /> : <SignIn auth={auth} />}
             <SignOut auth={auth} />
         </section>
     );
