@@ -1,9 +1,6 @@
-import { Auth, signOut } from "firebase/auth";
+import { auth } from "@/config/firebase";
+import { signOut } from "firebase/auth";
 
-interface Props {
-    auth: Auth;
-}
-
-export default function SignOut({ auth }: Props) {
+export default function SignOut() {
     return auth.currentUser && <button onClick={() => signOut(auth)}>Log Out</button>;
 }

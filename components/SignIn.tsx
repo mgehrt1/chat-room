@@ -1,10 +1,7 @@
+import { auth } from "@/config/firebase";
 import { signInWithPopup, GoogleAuthProvider, Auth } from "firebase/auth";
 
-interface Props {
-    auth: Auth;
-}
-
-export default function SignIn({ auth }: Props) {
+export default function SignIn() {
     const provider = new GoogleAuthProvider();
 
     const signInWithGoogle = () => {
