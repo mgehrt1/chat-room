@@ -1,5 +1,5 @@
 import { db } from "@/config/firebase";
-import { collection, doc, getDocs, serverTimestamp, setDoc } from "firebase/firestore";
+import { collection, doc, getDocs, query, serverTimestamp, setDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 
 export default function RoomSelector() {
@@ -9,14 +9,14 @@ export default function RoomSelector() {
     const [joinSuccess, setJoinSuccess] = useState(true);
     const [roomsList, setRoomsList] = useState<{ id: string }[]>([]);
 
-    const roomsColRef = collection(db, "rooms");
-
     const getRooms = async () => {
         try {
-            const data = await getDocs(roomsColRef);
+            const q = query(collection(db, "rooms"));
+            const data = await getDocs(q);
             const rooms = data.docs.map((doc) => ({
                 id: doc.id,
             }));
+            console.log(rooms);
             setRoomsList(rooms);
         } catch (error) {
             console.error(error);
@@ -24,8 +24,8 @@ export default function RoomSelector() {
     };
 
     useEffect(() => {
-        getRooms();
-    }, []);
+        console.log(roomsList);
+    }, [roomsList]);
 
     const createSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -33,22 +33,23 @@ export default function RoomSelector() {
         if (roomsList.some((room) => room.id === createId)) {
             setCreateSuccess(false);
         } else {
-            try {
-                await setDoc(doc(db, "rooms", createId), {});
+            const q = query(collection(db, "rooms"));
+            const data = await getDocs(q);
+            const rooms = data.docs.map((doc) => ({
+                id: doc.id,
+            }));
 
-                getRooms();
+            await setDoc(doc(db, "rooms", createId), {});
+            getRooms();
 
-                roomsList.map(async (room) => {
-                    if (room.id === createId) {
-                        await setDoc(doc(db, `rooms/${room.id}/messages`, "ignore"), {
-                            message: "test",
-                            createdAt: serverTimestamp(),
-                        });
-                    }
-                });
-            } catch (error) {
-                console.error(error);
-            }
+            rooms.map(async (room) => {
+                if (room.id == createId) {
+                    await setDoc(doc(db, `rooms/${room.id}/messages`, "ignore"), {
+                        message: "test",
+                        createdAt: serverTimestamp(),
+                    });
+                }
+            });
 
             setCreateSuccess(true);
             // redirect to new room
