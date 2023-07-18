@@ -1,5 +1,5 @@
 import { db } from "@/config/firebase";
-import { DocumentData, QuerySnapshot, addDoc, collection, doc, getDocs, setDoc } from "firebase/firestore";
+import { collection, doc, getDocs, serverTimestamp, setDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 
 export default function RoomSelector() {
@@ -9,22 +9,26 @@ export default function RoomSelector() {
     const [joinSuccess, setJoinSuccess] = useState(true);
     const [roomsList, setRoomsList] = useState<{ id: string }[]>([]);
 
+    let roomsList2: { id: string }[] = [];
+
     const roomsColRef = collection(db, "rooms");
 
-    const getRoomsList = async () => {
+    const getRooms = async () => {
         try {
             const data = await getDocs(roomsColRef);
             const rooms = data.docs.map((doc) => ({
                 id: doc.id,
             }));
             setRoomsList(rooms);
+            roomsList2 = rooms;
+            console.log(roomsList);
         } catch (error) {
             console.error(error);
         }
     };
 
     useEffect(() => {
-        getRoomsList();
+        getRooms();
     }, []);
 
     const createSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -33,19 +37,26 @@ export default function RoomSelector() {
         if (roomsList.some((room) => room.id === createId)) {
             setCreateSuccess(false);
         } else {
-            await setDoc(doc(db, "rooms", createId), {});
-
             try {
-                const data = await getDocs(roomsColRef);
-                const rooms = data.docs.map((doc) => ({
-                    id: doc.id,
-                }));
-                setRoomsList(rooms);
+                await setDoc(doc(db, "rooms", createId), {});
+
+                getRooms();
+
+                console.log(roomsList2); // ON THIS NOW - TEST IN BROWSER
+
+                roomsList.map(async (room) => {
+                    if (room.id === createId) {
+                        console.log(":ASODIGAJKDASJDAS");
+                        await setDoc(doc(db, `rooms/${room.id}/messages`, "ignore"), {
+                            message: "test",
+                            createdAt: serverTimestamp(),
+                        });
+                    }
+                });
             } catch (error) {
                 console.error(error);
             }
 
-            getRoomsList();
             setCreateSuccess(true);
             // redirect to new room
         }
