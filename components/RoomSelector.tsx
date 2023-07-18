@@ -9,8 +9,6 @@ export default function RoomSelector() {
     const [joinSuccess, setJoinSuccess] = useState(true);
     const [roomsList, setRoomsList] = useState<{ id: string }[]>([]);
 
-    let roomsList2: { id: string }[] = [];
-
     const roomsColRef = collection(db, "rooms");
 
     const getRooms = async () => {
@@ -20,8 +18,6 @@ export default function RoomSelector() {
                 id: doc.id,
             }));
             setRoomsList(rooms);
-            roomsList2 = rooms;
-            console.log(roomsList);
         } catch (error) {
             console.error(error);
         }
@@ -42,11 +38,8 @@ export default function RoomSelector() {
 
                 getRooms();
 
-                console.log(roomsList2); // ON THIS NOW - TEST IN BROWSER
-
                 roomsList.map(async (room) => {
                     if (room.id === createId) {
-                        console.log(":ASODIGAJKDASJDAS");
                         await setDoc(doc(db, `rooms/${room.id}/messages`, "ignore"), {
                             message: "test",
                             createdAt: serverTimestamp(),
