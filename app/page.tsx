@@ -11,9 +11,11 @@ export default function App() {
     const [user] = useAuthState(auth);
 
     return (
-        <div className="min-h-screen min-w-screen">
-            {user ? <RoomSelector /> : <SignIn />}
-            <SignOut />
+        <div className="flex flex-col justify-center items-center min-h-screen min-w-screen">
+            <div className="flex flex-col border-2 rounded-2xl p-5">
+                {user ? <RoomSelector /> : <SignIn />}
+                <SignOut />
+            </div>
         </div>
     );
 }

@@ -9,8 +9,11 @@ export default function SignIn() {
     };
 
     return (
-        <section id="sign-in" className="flex justify-center items-center w-1/2 h-1/2">
-            <button onClick={signInWithGoogle}>Log in with Google</button>
+        <section id="sign-in" className="flex flex-col">
+            <h2 className="text-4xl">Sign in to use Chat Rooms</h2>
+            <button onClick={signInWithGoogle} className="border-2 mt-8 py-2 px-4">
+                Log in with Google
+            </button>
         </section>
     );
 }
