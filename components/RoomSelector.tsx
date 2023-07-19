@@ -1,8 +1,10 @@
 import { db } from "@/config/firebase";
-import { collection, doc, getDocs, query, serverTimestamp, setDoc } from "firebase/firestore";
+import { collection, doc, getDocs, serverTimestamp, setDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function RoomSelector() {
+    const router = useRouter();
     const [createId, setCreateId] = useState("");
     const [joinId, setJoinId] = useState("");
     const [createSuccess, setCreateSuccess] = useState(true);
@@ -10,22 +12,17 @@ export default function RoomSelector() {
     const [roomsList, setRoomsList] = useState<{ id: string }[]>([]);
 
     const getRooms = async () => {
-        try {
-            const q = query(collection(db, "rooms"));
-            const data = await getDocs(q);
-            const rooms = data.docs.map((doc) => ({
-                id: doc.id,
-            }));
-            console.log(rooms);
-            setRoomsList(rooms);
-        } catch (error) {
-            console.error(error);
-        }
+        const roomsColRef = collection(db, "rooms");
+        const data = await getDocs(roomsColRef);
+        const rooms = data.docs.map((doc) => ({
+            id: doc.id,
+        }));
+        setRoomsList(rooms);
     };
 
     useEffect(() => {
-        console.log(roomsList);
-    }, [roomsList]);
+        getRooms();
+    }, []);
 
     const createSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -33,33 +30,22 @@ export default function RoomSelector() {
         if (roomsList.some((room) => room.id === createId)) {
             setCreateSuccess(false);
         } else {
-            const q = query(collection(db, "rooms"));
-            const data = await getDocs(q);
-            const rooms = data.docs.map((doc) => ({
-                id: doc.id,
-            }));
-
             await setDoc(doc(db, "rooms", createId), {});
-            getRooms();
-
-            rooms.map(async (room) => {
-                if (room.id == createId) {
-                    await setDoc(doc(db, `rooms/${room.id}/messages`, "ignore"), {
-                        message: "test",
-                        createdAt: serverTimestamp(),
-                    });
-                }
+            await setDoc(doc(db, `rooms/${createId}/messages`, "ignore"), {
+                message: "test",
+                createdAt: serverTimestamp(),
             });
 
+            getRooms();
             setCreateSuccess(true);
             // redirect to new room
+            router.push(`room/${createId}`);
         }
     };
 
     const joinSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        console.log(roomsList);
         if (roomsList.some((room) => room.id === joinId)) {
             setJoinSuccess(true);
             // redirect to room
