@@ -8,5 +8,9 @@ export default function SignIn() {
         signInWithPopup(auth, provider);
     };
 
-    return <button onClick={signInWithGoogle}>Log in with Google</button>;
+    return (
+        <section id="sign-in" className="flex justify-center items-center w-1/2 h-1/2">
+            <button onClick={signInWithGoogle}>Log in with Google</button>
+        </section>
+    );
 }

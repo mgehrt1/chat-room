@@ -11,9 +11,9 @@ export default function App() {
     const [user] = useAuthState(auth);
 
     return (
-        <section>
+        <div className="min-h-screen min-w-screen">
             {user ? <RoomSelector /> : <SignIn />}
             <SignOut />
-        </section>
+        </div>
     );
 }
