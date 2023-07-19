@@ -6,7 +6,6 @@ interface Props {
 }
 
 export default function Message({ msg }: Props) {
-    console.log(msg);
     const { text, createdAt, uid, photoURL }: DocumentData = msg;
 
     return (

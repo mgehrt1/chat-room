@@ -38,7 +38,7 @@ export default function ChatRoom({ roomId }: Props) {
                         <input type="text" name="text" placeholder="message" value={text} onChange={(e) => setText(e.target.value)} />
                         <button>Send</button>
                     </form>
-                    {messages && messages.docs.map((doc) => <Message key={doc.id} msg={doc} />)}
+                    {messages && messages.docs.map((doc) => <Message key={doc.id} msg={doc.data()} />)}
                 </div>
             ) : (
                 <h1>Room doesn't exist</h1>
