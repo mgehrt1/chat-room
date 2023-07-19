@@ -1,15 +1,16 @@
 import { db, auth } from "@/config/firebase";
 import { addDoc, collection, doc, serverTimestamp, setDoc } from "firebase/firestore";
 import { useState } from "react";
-import { useCollection } from "react-firebase-hooks/firestore";
+import { useCollection, useCollectionData, useCollectionDataOnce } from "react-firebase-hooks/firestore";
 
 interface Props {
     roomId: string;
 }
 
 export default function ChatRoom({ roomId }: Props) {
+    const [rooms, load, err, snapshot] = useCollectionDataOnce(collection(db, "rooms"));
     const [text, setText] = useState("");
-    const [messages, loading, error] = useCollection(collection(db, `rooms/${roomId}/messages`));
+    const [messages, loading, error] = useCollectionData(collection(db, `rooms/${roomId}/messages`));
     const currentUser = auth.currentUser;
 
     const sendMessage = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -25,23 +26,28 @@ export default function ChatRoom({ roomId }: Props) {
         setText("");
     };
 
-    return (
-        <div>
-            <h1>Chat</h1>
-            <form onSubmit={sendMessage}>
-                <input type="text" name="text" placeholder="message" onChange={(e) => setText(e.target.value)} />
-                <button>Send</button>
-            </form>
+    let exists: boolean | undefined = rooms?.some((room) => {
+        console.log(roomId);
+        console.log(room.id);
+        return room.id === roomId;
+    });
 
-            {error && <strong>Error: {JSON.stringify(error)}</strong>}
-            {loading && <span>Collection: Loading...</span>}
-            {messages && (
-                <div>
-                    {messages.docs.map((doc) => (
-                        <p key={doc.id}>{doc.data().text}</p>
-                    ))}
-                </div>
-            )}
-        </div>
+    return (
+        exists && (
+            <div>
+                <h1>Chat</h1>
+                <form onSubmit={sendMessage}>
+                    <input type="text" name="text" placeholder="message" onChange={(e) => setText(e.target.value)} />
+                    <button>Send</button>
+                </form>
+                {messages && (
+                    <div>
+                        {messages.map((msg) => (
+                            <p key={msg.id}>{msg.text}</p>
+                        ))}
+                    </div>
+                )}
+            </div>
+        )
     );
 }

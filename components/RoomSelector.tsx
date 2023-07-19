@@ -31,10 +31,6 @@ export default function RoomSelector() {
             setCreateSuccess(false);
         } else {
             await setDoc(doc(db, "rooms", createId), {});
-            await setDoc(doc(db, `rooms/${createId}/messages`, "ignore"), {
-                text: "ignore",
-                createdAt: serverTimestamp(),
-            });
 
             getRooms();
             setCreateSuccess(true);
