@@ -38,7 +38,7 @@ export default function RoomSelector() {
 
             getRooms();
             setCreateSuccess(true);
-            // redirect to new room
+
             router.push(`room/${createId}`);
         }
     };
@@ -48,7 +48,8 @@ export default function RoomSelector() {
 
         if (roomsList.some((room) => room.id === joinId)) {
             setJoinSuccess(true);
-            // redirect to room
+
+            router.push(`room/${joinId}`);
         } else {
             setJoinSuccess(false);
         }
