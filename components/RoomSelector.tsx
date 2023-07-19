@@ -32,7 +32,7 @@ export default function RoomSelector() {
         } else {
             await setDoc(doc(db, "rooms", createId), {});
             await setDoc(doc(db, `rooms/${createId}/messages`, "ignore"), {
-                message: "test",
+                text: "ignore",
                 createdAt: serverTimestamp(),
             });
 
