@@ -1,7 +1,8 @@
 import { db } from "@/config/firebase";
-import { collection, doc, getDocs, setDoc } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { collection, doc, setDoc } from "firebase/firestore";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useCollection } from "react-firebase-hooks/firestore";
 
 export default function RoomSelector() {
     const router = useRouter();
@@ -9,43 +10,23 @@ export default function RoomSelector() {
     const [joinId, setJoinId] = useState("");
     const [createSuccess, setCreateSuccess] = useState(true);
     const [joinSuccess, setJoinSuccess] = useState(true);
-    const [roomsList, setRoomsList] = useState<{ id: string }[]>([]);
-
-    const getRooms = async () => {
-        const roomsColRef = collection(db, "rooms");
-        const data = await getDocs(roomsColRef);
-        const rooms = data.docs.map((doc) => ({
-            ...doc.data(),
-            id: doc.id,
-        }));
-        setRoomsList(rooms);
-    };
-
-    useEffect(() => {
-        getRooms();
-    }, []);
+    const [rooms] = useCollection(collection(db, "rooms"));
 
     const createSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-
-        if (roomsList.some((room) => room.id === createId)) {
+        if (rooms?.docs.some((doc) => doc.id === createId)) {
             setCreateSuccess(false);
         } else {
             await setDoc(doc(db, "rooms", createId), {});
-
-            getRooms();
             setCreateSuccess(true);
-
             router.push(`room/${createId}`);
         }
     };
 
     const joinSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-
-        if (roomsList.some((room) => room.id === joinId)) {
+        if (rooms?.docs.some((doc) => doc.id === joinId)) {
             setJoinSuccess(true);
-
             router.push(`room/${joinId}`);
         } else {
             setJoinSuccess(false);

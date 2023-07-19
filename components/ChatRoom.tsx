@@ -1,7 +1,7 @@
 import { db, auth } from "@/config/firebase";
-import { addDoc, collection, doc, serverTimestamp, setDoc } from "firebase/firestore";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { useState } from "react";
-import { useCollection, useCollectionOnce, useCollectionDataOnce } from "react-firebase-hooks/firestore";
+import { useCollection } from "react-firebase-hooks/firestore";
 import Message from "./Message";
 
 interface Props {
@@ -9,7 +9,7 @@ interface Props {
 }
 
 export default function ChatRoom({ roomId }: Props) {
-    const [rooms] = useCollectionOnce(collection(db, "rooms"));
+    const [rooms] = useCollection(collection(db, "rooms"));
     const [text, setText] = useState("");
     const [messages] = useCollection(collection(db, `rooms/${roomId}/messages`));
     const currentUser = auth.currentUser;
