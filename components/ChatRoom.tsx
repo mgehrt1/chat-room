@@ -1,7 +1,7 @@
 import { db, auth } from "@/config/firebase";
 import { addDoc, collection, doc, serverTimestamp, setDoc } from "firebase/firestore";
 import { useState } from "react";
-import { useCollection, useCollectionData, useCollectionDataOnce } from "react-firebase-hooks/firestore";
+import { useCollection, useCollectionOnce, useCollectionDataOnce } from "react-firebase-hooks/firestore";
 import Message from "./Message";
 
 interface Props {
@@ -9,9 +9,9 @@ interface Props {
 }
 
 export default function ChatRoom({ roomId }: Props) {
-    const [rooms, load, err, snapshot] = useCollectionDataOnce(collection(db, "rooms"));
+    const [rooms] = useCollectionOnce(collection(db, "rooms"));
     const [text, setText] = useState("");
-    const [messages, loading, error] = useCollectionData(collection(db, `rooms/${roomId}/messages`));
+    const [messages] = useCollection(collection(db, `rooms/${roomId}/messages`));
     const currentUser = auth.currentUser;
 
     const sendMessage = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -27,7 +27,7 @@ export default function ChatRoom({ roomId }: Props) {
         setText("");
     };
 
-    let exists: boolean | undefined = rooms?.some((room) => room.roomId == roomId);
+    let exists: boolean | undefined = rooms?.docs.some((doc) => doc.id == roomId);
 
     return (
         <div>
@@ -38,7 +38,7 @@ export default function ChatRoom({ roomId }: Props) {
                         <input type="text" name="text" placeholder="message" value={text} onChange={(e) => setText(e.target.value)} />
                         <button>Send</button>
                     </form>
-                    {messages && messages.map((msg) => <Message key={msg.id} msg={msg} />)}
+                    {messages && messages.docs.map((doc) => <Message key={doc.id} msg={doc} />)}
                 </div>
             ) : (
                 <h1>Room doesn't exist</h1>

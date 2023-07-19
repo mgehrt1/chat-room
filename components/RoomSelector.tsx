@@ -1,5 +1,5 @@
 import { db } from "@/config/firebase";
-import { collection, doc, getDocs, serverTimestamp, setDoc } from "firebase/firestore";
+import { collection, doc, getDocs, setDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -31,9 +31,7 @@ export default function RoomSelector() {
         if (roomsList.some((room) => room.id === createId)) {
             setCreateSuccess(false);
         } else {
-            await setDoc(doc(db, "rooms", createId), {
-                roomId: createId,
-            });
+            await setDoc(doc(db, "rooms", createId), {});
 
             getRooms();
             setCreateSuccess(true);

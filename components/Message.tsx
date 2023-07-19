@@ -1,14 +1,18 @@
 import { DocumentData } from "firebase/firestore";
+import { StringLiteral } from "typescript";
 
 interface Props {
-    key: string;
     msg: DocumentData;
 }
 
-export default function Message({ key, msg }: Props) {
+export default function Message({ msg }: Props) {
+    console.log(msg);
+    const { text, createdAt, uid, photoURL }: DocumentData = msg;
+
     return (
         <div>
-            <p key={key}>{msg.text}</p>
+            <img src={photoURL} />
+            <p>{text}</p>
         </div>
     );
 }
