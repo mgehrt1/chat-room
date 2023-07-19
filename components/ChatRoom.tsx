@@ -2,6 +2,7 @@ import { db, auth } from "@/config/firebase";
 import { addDoc, collection, doc, serverTimestamp, setDoc } from "firebase/firestore";
 import { useState } from "react";
 import { useCollection, useCollectionData, useCollectionDataOnce } from "react-firebase-hooks/firestore";
+import Message from "./Message";
 
 interface Props {
     roomId: string;
@@ -26,28 +27,22 @@ export default function ChatRoom({ roomId }: Props) {
         setText("");
     };
 
-    let exists: boolean | undefined = rooms?.some((room) => {
-        console.log(roomId);
-        console.log(room.id);
-        return room.id === roomId;
-    });
+    let exists: boolean | undefined = rooms?.some((room) => room.roomId == roomId);
 
     return (
-        exists && (
-            <div>
-                <h1>Chat</h1>
-                <form onSubmit={sendMessage}>
-                    <input type="text" name="text" placeholder="message" onChange={(e) => setText(e.target.value)} />
-                    <button>Send</button>
-                </form>
-                {messages && (
-                    <div>
-                        {messages.map((msg) => (
-                            <p key={msg.id}>{msg.text}</p>
-                        ))}
-                    </div>
-                )}
-            </div>
-        )
+        <div>
+            {exists ? (
+                <div>
+                    <h1>Chat</h1>
+                    <form onSubmit={sendMessage}>
+                        <input type="text" name="text" placeholder="message" value={text} onChange={(e) => setText(e.target.value)} />
+                        <button>Send</button>
+                    </form>
+                    {messages && messages.map((msg) => <Message key={msg.id} msg={msg} />)}
+                </div>
+            ) : (
+                <h1>Room doesn't exist</h1>
+            )}
+        </div>
     );
 }

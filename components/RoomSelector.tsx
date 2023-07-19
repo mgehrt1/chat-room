@@ -15,6 +15,7 @@ export default function RoomSelector() {
         const roomsColRef = collection(db, "rooms");
         const data = await getDocs(roomsColRef);
         const rooms = data.docs.map((doc) => ({
+            ...doc.data(),
             id: doc.id,
         }));
         setRoomsList(rooms);
@@ -30,7 +31,9 @@ export default function RoomSelector() {
         if (roomsList.some((room) => room.id === createId)) {
             setCreateSuccess(false);
         } else {
-            await setDoc(doc(db, "rooms", createId), {});
+            await setDoc(doc(db, "rooms", createId), {
+                roomId: createId,
+            });
 
             getRooms();
             setCreateSuccess(true);
