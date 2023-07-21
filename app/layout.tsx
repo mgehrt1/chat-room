@@ -1,5 +1,12 @@
 import "./global.css";
 import type { Metadata } from "next";
+import { Lato } from "next/font/google";
+
+const lato = Lato({
+    weight: ["400", "700"],
+    style: ["normal"],
+    subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
     title: "Chat Room App",
@@ -9,7 +16,7 @@ export const metadata: Metadata = {
 export default function Layout({ children }: { children: React.ReactNode }) {
     return (
         <html lang="en">
-            <body>{children}</body>
+            <body className={lato.className}>{children}</body>
         </html>
     );
 }

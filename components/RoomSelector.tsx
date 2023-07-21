@@ -34,17 +34,17 @@ export default function RoomSelector() {
     };
 
     return (
-        <div className="flex flex-col">
+        <section className="flex flex-col">
             <form onSubmit={createSubmit} className="flex">
-                <input type="text" name="createId" placeholder="Create custom ID" onChange={(e) => setCreateId(e.target.value)} className="border-2 rounded-md mr-2 pl-1" />
-                {!createSuccess && <p>Room id already in use</p>}
-                <button className="border-2 rounded-md w-full px-1">Create</button>
+                <input type="text" name="createId" placeholder="Create custom ID" onChange={(e) => setCreateId(e.target.value)} className="border-2 rounded-md w-2/3 mr-2 pl-1" />
+                <button className="border-2 rounded-md w-1/3 px-1">Create</button>
             </form>
+            {!createSuccess && <p>Room id already in use</p>}
             <form onSubmit={joinSubmit} className="flex mt-2">
-                <input type="text" name="joinId" placeholder="Join with room ID" onChange={(e) => setJoinId(e.target.value)} className="border-2 rounded-md mr-2 pl-1" />
-                {!joinSuccess && <p>Invalid room id</p>}
-                <button className="border-2 rounded-md w-full px-1">Join</button>
+                <input type="text" name="joinId" placeholder="Join with room ID" onChange={(e) => setJoinId(e.target.value)} className="border-2 rounded-md w-2/3 mr-2 pl-1" />
+                <button className="border-2 rounded-md w-1/3 px-1">Join</button>
             </form>
-        </div>
+            {!joinSuccess && <p>Invalid room id</p>}
+        </section>
     );
 }

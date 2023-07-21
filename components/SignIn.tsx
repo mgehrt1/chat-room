@@ -1,18 +1,31 @@
 import { auth } from "@/config/firebase";
 import { signInWithPopup, GoogleAuthProvider, Auth } from "firebase/auth";
+import { useState } from "react";
 
 export default function SignIn() {
     const provider = new GoogleAuthProvider();
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
 
     const signInWithGoogle = () => {
         signInWithPopup(auth, provider);
     };
 
+    const submit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+    };
+
     return (
-        <section id="sign-in" className="flex flex-col">
-            <h2 className="text-4xl">Sign in to use Chat Rooms</h2>
-            <button onClick={signInWithGoogle} className="border-2 mt-8 py-2 px-4">
-                Log in with Google
+        <section className="flex flex-col items-center">
+            <h2 className="text-navy text-4xl mt-4">Welcome to the Chat Rooms App!</h2>
+            <form onSubmit={submit} className="flex flex-col items-center w-full">
+                <input type="text" name="email" value={email} placeholder="Email" onChange={(e) => setEmail(e.target.value)} className="bg-sky-blue placeholder:text-navy font-bold border-[1px] border-navy rounded-xl w-3/5 mt-12 pl-2 py-2" />
+                <input type="password" name="password" value={password} placeholder="Password" onChange={(e) => setPassword(e.target.value)} className="bg-sky-blue placeholder:text-navy font-bold border-[1px] border-navy rounded-xl w-3/5 mt-4 pl-2 py-2" />
+                <button className="bg-light-blue text-white-blue text-lg border-2 rounded-xl w-3/5 mt-4 py-2">Sign in</button>
+            </form>
+            <p className="mt-6">----------------------------- or -----------------------------</p>
+            <button onClick={signInWithGoogle} className="flex justify-center bg-light-blue text-white-blue text-lg border-2 rounded-xl w-3/5 my-6 py-2">
+                Sign in with Google
             </button>
         </section>
     );
