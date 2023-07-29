@@ -1,5 +1,4 @@
 import { DocumentData } from "firebase/firestore";
-import { StringLiteral } from "typescript";
 
 interface Props {
     msg: DocumentData;
