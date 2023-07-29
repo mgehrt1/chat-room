@@ -14,9 +14,11 @@ export default function App() {
     return (
         <div className="flex flex-col items-center min-w-screen min-h-screen">
             <Nav />
-            <div className="flex flex-col bg-sky-blue rounded-2xl w-1/3 mt-52 p-5">
-                {user ? <RoomSelector /> : <SignIn />}
-                <SignOut />
+            <div className="flex justify-center items-center flex-1">
+                <div className="bg-sky-blue rounded-2xl p-5 w-[600px]">
+                    {user ? <RoomSelector /> : <SignIn />}
+                    <SignOut />
+                </div>
             </div>
         </div>
     );
