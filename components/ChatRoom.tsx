@@ -34,11 +34,12 @@ export default function ChatRoom({ roomId }: Props) {
             {exists ? (
                 <div>
                     <h1>Chat</h1>
+                    {messages && messages.docs.map((doc) => <Message key={doc.id} msg={doc.data()} />)}
+
                     <form onSubmit={sendMessage}>
-                        <input type="text" name="text" placeholder="message" value={text} onChange={(e) => setText(e.target.value)} />
+                        <input type="text" name="text" placeholder="Message" value={text} onChange={(e) => setText(e.target.value)} className="outline-0 border-2 rounded-xl pl-2" />
                         <button>Send</button>
                     </form>
-                    {messages && messages.docs.map((doc) => <Message key={doc.id} msg={doc.data()} />)}
                 </div>
             ) : (
                 <h1>Room doesn't exist</h1>
