@@ -1,5 +1,6 @@
 import { auth } from "@/config/firebase";
-import { signInWithPopup, GoogleAuthProvider, Auth } from "firebase/auth";
+import { signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword } from "firebase/auth";
+import Link from "next/link";
 import { useState } from "react";
 
 export default function SignIn() {
@@ -11,8 +12,13 @@ export default function SignIn() {
         signInWithPopup(auth, provider);
     };
 
-    const submit = (e: React.FormEvent<HTMLFormElement>) => {
+    const submit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        try {
+            await signInWithEmailAndPassword(auth, email, password);
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     return (
@@ -23,10 +29,15 @@ export default function SignIn() {
                 <input type="password" name="password" value={password} placeholder="Password" onChange={(e) => setPassword(e.target.value)} className="bg-sky-blue placeholder:text-navy font-bold border-[1px] border-navy rounded-xl w-3/5 mt-4 pl-2 py-2" />
                 <button className="bg-light-blue text-white-blue text-lg border-2 rounded-xl w-3/5 mt-4 py-2">Sign in</button>
             </form>
-            <p className="mt-6">----------------------------- or -----------------------------</p>
-            <button onClick={signInWithGoogle} className="flex justify-center bg-light-blue text-white-blue text-lg border-2 rounded-xl w-3/5 my-6 py-2">
+            <button onClick={signInWithGoogle} className="flex justify-center bg-light-blue text-white-blue text-lg border-2 rounded-xl w-3/5 mt-10 mb-6 py-2">
                 Sign in with Google
             </button>
+            <p className="text-navy">
+                Don't have an account?{" "}
+                <Link href="/sign-up" className="text-light-blue">
+                    Sign up
+                </Link>
+            </p>
         </section>
     );
 }
