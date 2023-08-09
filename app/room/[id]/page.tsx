@@ -5,6 +5,7 @@ import { auth } from "@/config/firebase";
 
 import ChatRoom from "@/components/ChatRoom";
 import Nav from "@/components/Nav";
+import NotLoggedIn from "@/components/NotLoggedIn";
 
 export default function Room({ params }: { params: { id: string } }) {
     const [user] = useAuthState(auth);
@@ -12,7 +13,7 @@ export default function Room({ params }: { params: { id: string } }) {
     return (
         <div className="flex flex-col items-center h-screen">
             <Nav user={user} />
-            {user ? <ChatRoom roomId={params.id} /> : <p>Must be logged in</p>}
+            {user ? <ChatRoom roomId={params.id} /> : <NotLoggedIn />}
         </div>
     );
 }
