@@ -1,6 +1,6 @@
 import { db, auth } from "@/config/firebase";
 import { addDoc, collection, limit, orderBy, query, serverTimestamp } from "firebase/firestore";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useCollection } from "react-firebase-hooks/firestore";
 import Message from "./Message";
 import Link from "next/link";
@@ -14,7 +14,7 @@ export default function ChatRoom({ roomId }: Props) {
     const [rooms] = useCollection(collection(db, "rooms"));
     const [text, setText] = useState("");
     const [messages] = useCollection(query(collection(db, `rooms/${roomId}/messages`), orderBy("createdAt"), limit(50)));
-    const dummy = useRef();
+    const dummy = useRef<HTMLDivElement | null>(null);
     const currentUser = auth.currentUser;
 
     const sendMessage = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -28,9 +28,13 @@ export default function ChatRoom({ roomId }: Props) {
         });
 
         setText("");
-
-        dummy.current.scrollIntoView({ beavior: "smooth" });
     };
+
+    useEffect(() => {
+        if (dummy.current) {
+            dummy.current.scrollIntoView({ behavior: "smooth" });
+        }
+    }, [messages]);
 
     let exists: boolean | undefined = rooms?.docs.some((doc) => doc.id == roomId);
 
@@ -46,7 +50,7 @@ export default function ChatRoom({ roomId }: Props) {
                             {window.location.href}
                         </Link>
                     </div>
-                    <div className="flex flex-col w-full h-full overflow-y-scroll xl:px-48 lg:px-24 pb-16">
+                    <div className="flex flex-col w-full h-full overflow-y-scroll xl:px-48 lg:px-24">
                         <div className="flex-grow w-full px-5">{messages && messages.docs.map((doc) => <Message key={doc.id} msg={doc.data()} />)}</div>
                         <div ref={dummy}></div>
                     </div>
