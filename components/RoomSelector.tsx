@@ -35,16 +35,16 @@ export default function RoomSelector() {
 
     return (
         <section className="flex flex-col">
-            <h2 className="text-navy text-2xl mt-4">Create a room with a custom ID to share with your friends!</h2>
-            <form onSubmit={createSubmit} className="flex">
-                <input type="text" name="createId" placeholder="Create custom ID" onChange={(e) => setCreateId(e.target.value)} className="border-2 rounded-md w-2/3 mr-2 pl-1 py-2" />
-                <button className="bg-light-blue text-white-blue border-2 rounded-md w-1/3 px-1 py-2">Create</button>
+            <h2 className="text-navy text-2xl mt-4">Create a room with a custom ID!</h2>
+            <form onSubmit={createSubmit} className="flex mt-6">
+                <input type="text" name="createId" placeholder="Create custom ID" onChange={(e) => setCreateId(e.target.value)} className="border-2 rounded-lg w-2/3 mr-2 pl-1 py-2" />
+                <button className="bg-light-blue text-white-blue border-2 rounded-lg w-1/3 px-1 py-2">Create</button>
             </form>
             {!createSuccess && <p>Room id already in use</p>}
-            <h2 className="text-navy text-2xl mt-4">Enter a room ID to join and chat!</h2>
-            <form onSubmit={joinSubmit} className="flex mt-2">
-                <input type="text" name="joinId" placeholder="Join with room ID" onChange={(e) => setJoinId(e.target.value)} className="border-2 rounded-md w-2/3 mr-2 pl-1 py-2" />
-                <button className="bg-green-500 text-white-blue border-2 rounded-md w-1/3 px-1 py-2">Join</button>
+            <h2 className="text-navy text-2xl mt-16">Enter a room ID to join and chat!</h2>
+            <form onSubmit={joinSubmit} className="flex mt-6">
+                <input type="text" name="joinId" placeholder="Join with room ID" onChange={(e) => setJoinId(e.target.value)} className="border-2 rounded-lg w-2/3 mr-2 pl-1 py-2" />
+                <button className="bg-green-500 text-white-blue border-2 rounded-lg w-1/3 px-1 py-2">Join</button>
             </form>
             {!joinSuccess && <p>Invalid room id</p>}
         </section>

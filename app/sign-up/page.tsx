@@ -33,7 +33,7 @@ export default function SignUp() {
                         <form onSubmit={submit} className="flex flex-col items-center w-full">
                             <input type="text" name="email" value={email} placeholder="Email" onChange={(e) => setEmail(e.target.value)} className="bg-sky-blue placeholder:text-navy font-bold border-[1px] border-navy rounded-xl w-3/5 mt-12 pl-2 py-2" />
                             <input type="password" name="password" value={password} placeholder="Password" onChange={(e) => setPassword(e.target.value)} className="bg-sky-blue placeholder:text-navy font-bold border-[1px] border-navy rounded-xl w-3/5 mt-4 pl-2 py-2" />
-                            <button className="bg-light-blue text-white-blue text-lg border-2 rounded-xl w-3/5 mt-4 py-2">Sign up</button>
+                            <button className="bg-light-blue text-white-blue text-lg border-2 rounded-xl w-3/5 my-4 py-2">Sign up</button>
                         </form>
                     </section>
                 </div>
