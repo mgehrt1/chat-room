@@ -16,7 +16,7 @@ export default function Nav({ user }: Props) {
     };
 
     return (
-        <nav className="sticky flex justify-between items-center bg-light-blue w-full py-2">
+        <nav className="sticky flex justify-between items-center z-50 bg-light-blue w-full py-2">
             <Link href="/" className="text-white-blue border-4 rounded-3xl p-2 text-3xl ml-12">
                 Chat Rooms
             </Link>
