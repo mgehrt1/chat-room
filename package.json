@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "serve": "firebase emulators:start",
+    "deploy": "firebase deploy --only hosting",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
