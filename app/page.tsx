@@ -12,7 +12,7 @@ export default function App() {
 
     return (
         <div className="flex flex-col items-center min-w-screen min-h-screen">
-            <Nav user={user} />
+            <Nav />
             <div className="flex justify-center items-center flex-1 w-full">
                 <div className="bg-sky-blue rounded-2xl p-5 sm:w-[600px] w-full">{user ? <RoomSelector /> : <SignIn />}</div>
             </div>

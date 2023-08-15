@@ -7,14 +7,18 @@ import ChatRoom from "@/components/ChatRoom";
 import Nav from "@/components/Nav";
 import SignIn from "@/components/SignIn";
 
-export default function Room({ params }: { params: { id: string } }) {
+interface Props {
+    id: string;
+}
+
+export default function Page({ id }: Props) {
     const [user] = useAuthState(auth);
 
     return (
         <div className="flex flex-col items-center h-screen">
             <Nav />
             {user ? (
-                <ChatRoom roomId={params.id} />
+                <ChatRoom roomId={id} />
             ) : (
                 <div className="flex justify-center items-center flex-1 w-full">
                     <div className="bg-sky-blue rounded-2xl p-5 sm:w-[600px] w-full">

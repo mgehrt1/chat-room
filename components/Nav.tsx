@@ -1,13 +1,12 @@
-import { User } from "firebase/auth";
 import Link from "next/link";
 import SignOut from "./SignOut";
 import { useState } from "react";
 
-interface Props {
-    user: User | null | undefined;
-}
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "@/config/firebase";
 
-export default function Nav({ user }: Props) {
+export default function Nav() {
+    const [user] = useAuthState(auth);
     const [visible, setVisible] = useState(false);
     const photoURL: string = user?.photoURL ?? "/default-user.png";
 
