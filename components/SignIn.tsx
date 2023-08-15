@@ -1,3 +1,5 @@
+"use client";
+
 import { auth } from "@/config/firebase";
 import { signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword } from "firebase/auth";
 import Link from "next/link";

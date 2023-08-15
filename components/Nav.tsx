@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import SignOut from "./SignOut";
 import { useState } from "react";
