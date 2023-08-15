@@ -7,7 +7,7 @@ import ChatRoom from "@/components/ChatRoom";
 import Nav from "@/components/Nav";
 import SignIn from "@/components/SignIn";
 
-export default function Room({ params }: { params: { id: string } }) {
+export default function Page({ params }: { params: { id: string } }) {
     const [user] = useAuthState(auth);
 
     return (
